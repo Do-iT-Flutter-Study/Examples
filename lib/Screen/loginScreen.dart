@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+
 import './homeScreen.dart';
+import './signUpScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,11 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         labelStyle: TextStyle(color: Colors.grey),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.redAccent),
+                          borderSide:
+                              BorderSide(width: 1, color: Colors.redAccent),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.redAccent),
+                          borderSide:
+                              BorderSide(width: 1, color: Colors.redAccent),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -83,23 +88,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
-                        icon: Icon(
-                          _isObscure ? Icons.visibility : Icons.visibility_off),
-                        onPressed: (){
-                          setState(() {
-                            _isObscure = !_isObscure;
-                          });
-                        }),
+                          icon: Icon(_isObscure
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          }),
                       labelText: 'Password',
-                      hintText: "Enter your Password",
+                      hintText: "Enter your password",
                       labelStyle: TextStyle(color: Colors.grey),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                        borderSide: BorderSide(width: 1, color: Colors.redAccent),
+                        borderSide:
+                            BorderSide(width: 1, color: Colors.redAccent),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                        borderSide: BorderSide(width: 1, color: Colors.redAccent),
+                        borderSide:
+                            BorderSide(width: 1, color: Colors.redAccent),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -111,11 +119,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         TextButton(
-                        onPressed: () {},
-                        child: Text("Forgot Password?"),
+                          onPressed: () {},
+                          child: Text("Forgot Password?"),
                         )
-                      ]
-                  ),
+                      ]),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -128,35 +135,46 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         Text(
-                            "Remember me",
-                            style: TextStyle(color: Colors.grey),
+                          "Remember me",
+                          style: TextStyle(color: Colors.grey),
                         ),
-                      ]
-                  ),
+                      ]),
                   SizedBox(
-                    width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                          side: BorderSide(color: Colors.red)
-                        )
-                      )
-                    ),
-                      child: Text("Login"),
-                  )),
-                  Text(
-                    "Don't have an account?",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text("SIGN UP NOW"),
-                  ),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(32.0)),
+                                    side: BorderSide(color: Colors.red)))),
+                        child: Text("Login"),
+                      )),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SignUpScreen(title: widget.title)),
+                            );
+                          },
+                          child: Text("SIGN UP NOW"),
+                        ),
+                      ]),
                 ],
               ),
             ),
@@ -167,7 +185,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen(title: widget.title)),
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(title: widget.title)),
           );
         },
         child: Icon(Icons.navigation),
