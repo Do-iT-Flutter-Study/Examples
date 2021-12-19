@@ -3,6 +3,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import './homeScreen.dart';
 import './signUpScreen.dart';
+import './forgotPasswordScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -119,7 +120,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ForgotPasswordScreen(title: widget.title)),
+                            );
+                          },
                           child: Text("Forgot Password?"),
                         )
                       ]),
@@ -142,7 +150,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(title: widget.title)),
+                          );
+                        },
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.red),
