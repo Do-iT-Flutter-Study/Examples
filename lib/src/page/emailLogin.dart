@@ -1,40 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-import './homeScreen.dart';
-import './signUpScreen.dart';
-import './forgotPasswordScreen.dart';
+import './home.dart';
+import 'signUp.dart';
+import 'forgotPassword.dart';
 
-void main() {
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Doit! Flutter Study',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Doit! Flutter Study'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class EmailLogin extends StatefulWidget {
+  const EmailLogin({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<EmailLogin> createState() => _EmailLoginState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _EmailLoginState extends State<EmailLogin> {
   bool _isObscure = true;
   bool? _isChecked = false;
 
@@ -70,12 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
                           borderSide:
-                              BorderSide(width: 1, color: Colors.redAccent),
+                          BorderSide(width: 1, color: Colors.redAccent),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
                           borderSide:
-                              BorderSide(width: 1, color: Colors.redAccent),
+                          BorderSide(width: 1, color: Colors.redAccent),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -103,12 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
                         borderSide:
-                            BorderSide(width: 1, color: Colors.redAccent),
+                        BorderSide(width: 1, color: Colors.redAccent),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
                         borderSide:
-                            BorderSide(width: 1, color: Colors.redAccent),
+                        BorderSide(width: 1, color: Colors.redAccent),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -125,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ForgotPasswordScreen(title: widget.title)),
+                                      ForgotPassword(title: widget.title)),
                             );
                           },
                           child: Text("Forgot Password?"),
@@ -154,19 +134,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeScreen(title: widget.title)),
+                                builder: (context) => Home(title: widget.title)),
                           );
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.red),
+                            MaterialStateProperty.all(Colors.red),
                             foregroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            MaterialStateProperty.all(Colors.white),
                             shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(32.0)),
+                                    BorderRadius.all(Radius.circular(32.0)),
                                     side: BorderSide(color: Colors.red)))),
                         child: Text("Login"),
                       )),
@@ -183,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SignUpScreen(title: widget.title)),
+                                      SignUp(title: widget.title)),
                             );
                           },
                           child: Text("SIGN UP NOW"),
@@ -200,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => HomeScreen(title: widget.title)),
+                builder: (context) => Home(title: widget.title)),
           );
         },
         child: Icon(Icons.navigation),

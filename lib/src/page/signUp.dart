@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key, required this.title}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpState extends State<SignUp> {
   bool _isObscure = true;
   bool? _isChecked = false;
 
