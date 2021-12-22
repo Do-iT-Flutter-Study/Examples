@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">2022 DoiT! flutter study</string>
+    <string name="facebook_app_id">216840200517008</string>
+    <string name="fb_login_protocol_scheme">fb216840200517008</string>
+</resources>
