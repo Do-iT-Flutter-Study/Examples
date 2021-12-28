@@ -59,16 +59,6 @@ class _LoginState extends State<Login> {
   // // photoUrl = user.photoUrl;
   // // name = user.displayName;
   // // });
-  // Future<UserCredential> signInWithGoogle() async {
-  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //   final GoogleSignInAuthentication? googleAuth =
-  //       await googleUser?.authentication;
-  //   final OAuthCredential credential = GoogleAuthProvider.credential(
-  //     accessToken: googleAuth?.accessToken,
-  //     idToken: googleAuth?.idToken,
-  //   );
-  //   return await FirebaseAuth.instance.signInWithCredential(credential);
-  // }
 
   //
   // // 이후 추가로 유저 정보를 가지고 오고 싶다면
@@ -85,19 +75,6 @@ class _LoginState extends State<Login> {
   // // photoUrl = user.photoUrl;
   // // name = user.displayName;
   // // });
-  // Future<UserCredential> signInWithFacebook() async {
-  //   // Trigger the sign-in flow
-  //   final AccessToken result =
-  //       (await FacebookAuth.instance.login()) as AccessToken;
-  //
-  //   // Create a credential from the access token
-  //   final OAuthCredential facebookAuthCredential =
-  //       FacebookAuthProvider.credential(result.token);
-  //
-  //   // Once signed in, return the UserCredential
-  //   return await FirebaseAuth.instance
-  //       .signInWithCredential(facebookAuthCredential);
-  // }
 
   @override
   Widget build(BuildContext context) {

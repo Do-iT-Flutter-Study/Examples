@@ -4,7 +4,47 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? _user = null;
 
+  void setUser(User? user) {
+    _user = user;
+  }
+
+  User? getUser() {
+    return _user;
+  }
+
+  // email&password
+  Future<bool?> signUpWithEmail(String email, String password) async {
+    try {
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      if (credential.user != null) {
+        await credential.user?.sendEmailVerification();
+        signOut();
+        return true;
+      }
+    } on Exception catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool?> signInWithEmail(String email, String password) async {
+    try {
+      UserCredential credential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if (credential != null) {
+        setUser(credential.user);
+        return true;
+      }
+      return false;
+    } on Exception catch (e) {
+      return false;
+    }
+  }
+
+  // SNS
+  // Google
   Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -15,6 +55,7 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  // Facebook
   Future<UserCredential> signInWithFacebook() async {
     // Trigger the sign-in flow
     final AccessToken result = (await FacebookAuth.instance.login()) as AccessToken;
@@ -28,10 +69,11 @@ class AuthService {
         .signInWithCredential(facebookAuthCredential);
   }
 
-  Future signOut() async {
+  signOut() async {
     try {
       print("sing out complete");
-      return await _auth.signOut();
+      await _auth.signOut();
+      setUser(null);
     } catch (e) {
       print("sign out failed");
       print(e.toString());
