@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import './login.dart';
+import '../service/auth.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key, required this.title}) : super(key: key);
@@ -14,9 +16,37 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-
+  AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
+    List _widgetOptions = [
+      Text(
+        'HomeScreen',
+        style: TextStyle(fontSize: 40),
+      ),
+      Text(
+        'FavoriteScreen',
+        style: TextStyle(fontSize: 40),
+      ),
+      Text(
+        'MenuScreen',
+        style: TextStyle(fontSize: 40),
+      ),
+      ElevatedButton(
+        onPressed: () async {
+          await _auth.signOut();
+        },
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.red),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                    side: BorderSide(color: Colors.red)))),
+        child: Text("Sign out"),
+      )
+    ];
+
     return Scaffold(
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -26,8 +56,7 @@ class _HomeState extends State<Home> {
           } else {
             return DefaultTabController(
                 length: 4,
-                child:
-                Scaffold(
+                child: Scaffold(
                   appBar: AppBar(
                     title: Text(widget.title),
                   ),
@@ -60,27 +89,12 @@ class _HomeState extends State<Home> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.navigation),
+      ),
     );
   }
-
-  List _widgetOptions = [
-    Text(
-      'HomeScreen',
-      style: TextStyle(fontSize: 40),
-    ),
-    Text(
-      'FavoriteScreen',
-      style: TextStyle(fontSize: 40),
-    ),
-    Text(
-      'MenuScreen',
-      style: TextStyle(fontSize: 40),
-    ),
-    Text(
-      'MyScreen',
-      style: TextStyle(fontSize: 40),
-    )
-  ];
 }
-
-

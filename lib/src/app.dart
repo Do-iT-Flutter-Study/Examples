@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_project/src/page/login.dart';
 
 import './page/home.dart';
 
@@ -15,7 +16,7 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return Home(title: 'Doit! Flutter Study');
+          return Login(title: 'Doit! Flutter Study');
         }
         return CircularProgressIndicator();
       },

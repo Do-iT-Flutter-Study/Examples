@@ -6,8 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'home.dart';
 import 'signUp.dart';
 import 'emailLogin.dart';
+import '../service/auth.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,31 +41,63 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  AuthService _auth = AuthService();
   bool _isObscure = true;
   bool? _isChecked = false;
 
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
+  // // 이후 추가로 유저 정보를 가지고 오고 싶다면
+  // // String name = "";
+  // // String email = "";
+  // // String photoUrl = "";
+  // // final AuthResult authResult = await signInWithGoogle();
+  // // final FirebaseUser user = await signInWithGoogle().user;
+  // // currentUser = await _auth.currentUser();
+  // // assert(user.uid == currentUser.uid);
+  // //
+  // // setState(() {
+  // // email = user.email;
+  // // photoUrl = user.photoUrl;
+  // // name = user.displayName;
+  // // });
+  // Future<UserCredential> signInWithGoogle() async {
+  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //   final GoogleSignInAuthentication? googleAuth =
+  //       await googleUser?.authentication;
+  //   final OAuthCredential credential = GoogleAuthProvider.credential(
+  //     accessToken: googleAuth?.accessToken,
+  //     idToken: googleAuth?.idToken,
+  //   );
+  //   return await FirebaseAuth.instance.signInWithCredential(credential);
+  // }
 
-  Future<UserCredential> signInWithFacebook() async {
-    // Trigger the sign-in flow
-    final AccessToken result = (await FacebookAuth.instance.login()) as AccessToken;
-
-    // Create a credential from the access token
-    final OAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(result.token);
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance
-        .signInWithCredential(facebookAuthCredential);
-  }
+  //
+  // // 이후 추가로 유저 정보를 가지고 오고 싶다면
+  // // String name = "";
+  // // String email = "";
+  // // String photoUrl = "";
+  // // final AuthResult authResult = await signInWithGoogle();
+  // // final FirebaseUser user = await signInWithGoogle().user;
+  // // currentUser = await _auth.currentUser();
+  // // assert(user.uid == currentUser.uid);
+  // //
+  // // setState(() {
+  // // email = user.email;
+  // // photoUrl = user.photoUrl;
+  // // name = user.displayName;
+  // // });
+  // Future<UserCredential> signInWithFacebook() async {
+  //   // Trigger the sign-in flow
+  //   final AccessToken result =
+  //       (await FacebookAuth.instance.login()) as AccessToken;
+  //
+  //   // Create a credential from the access token
+  //   final OAuthCredential facebookAuthCredential =
+  //       FacebookAuthProvider.credential(result.token);
+  //
+  //   // Once signed in, return the UserCredential
+  //   return await FirebaseAuth.instance
+  //       .signInWithCredential(facebookAuthCredential);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +123,23 @@ class _LoginState extends State<Login> {
                   SignInButton(
                     Buttons.Google,
                     onPressed: () {
-                      signInWithGoogle();
+                      _auth.signInWithGoogle().whenComplete(() =>
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Home(title: widget.title))));
                     },
                   ),
                   SignInButton(
                     Buttons.Facebook,
                     onPressed: () {
-                      signInWithFacebook();
+                      _auth.signInWithFacebook().whenComplete(() =>
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Home(title: widget.title))));
                     },
                   ),
                   SignInButton(
