@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import './home.dart';
+import 'home.dart';
 import 'signUp.dart';
 import 'forgotPassword.dart';
 
+import '../service/auth.dart';
 
 class EmailLogin extends StatefulWidget {
   const EmailLogin({Key? key, required this.title}) : super(key: key);
@@ -15,8 +16,20 @@ class EmailLogin extends StatefulWidget {
 }
 
 class _EmailLoginState extends State<EmailLogin> {
+  final idController = TextEditingController();
+  final pwController = TextEditingController();
+
+  AuthService _auth = AuthService();
+
   bool _isObscure = true;
   bool? _isChecked = false;
+
+  @override
+  void dispose() {
+    idController.dispose();
+    pwController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +55,7 @@ class _EmailLoginState extends State<EmailLogin> {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     child: TextField(
+                      controller: idController,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.people),
                         labelText: 'ID',
@@ -50,12 +64,12 @@ class _EmailLoginState extends State<EmailLogin> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
                           borderSide:
-                          BorderSide(width: 1, color: Colors.redAccent),
+                              BorderSide(width: 1, color: Colors.redAccent),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
                           borderSide:
-                          BorderSide(width: 1, color: Colors.redAccent),
+                              BorderSide(width: 1, color: Colors.redAccent),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -65,6 +79,7 @@ class _EmailLoginState extends State<EmailLogin> {
                     ),
                   ),
                   TextField(
+                    controller: pwController,
                     obscureText: _isObscure,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock),
@@ -83,12 +98,12 @@ class _EmailLoginState extends State<EmailLogin> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
                         borderSide:
-                        BorderSide(width: 1, color: Colors.redAccent),
+                            BorderSide(width: 1, color: Colors.redAccent),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
                         borderSide:
-                        BorderSide(width: 1, color: Colors.redAccent),
+                            BorderSide(width: 1, color: Colors.redAccent),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -131,22 +146,59 @@ class _EmailLoginState extends State<EmailLogin> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Home(title: widget.title)),
-                          );
+                          _auth
+                              .signInWithEmail(
+                                  idController.text, pwController.text)
+                              .catchError((onError) {
+                            print(onError);
+                          }).then((success) {
+                            if (success == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Home(title: widget.title)),
+                              );
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        title: Column(children: <Widget>[
+                                          Text("Login failed"),
+                                        ]),
+                                        content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text("ID or password error")
+                                            ]),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("OK"))
+                                        ]);
+                                  });
+                            }
+                          });
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.red),
+                                MaterialStateProperty.all(Colors.red),
                             foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                                MaterialStateProperty.all(Colors.white),
                             shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                                    RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(32.0)),
+                                        BorderRadius.all(Radius.circular(32.0)),
                                     side: BorderSide(color: Colors.red)))),
                         child: Text("Login"),
                       )),
@@ -179,8 +231,7 @@ class _EmailLoginState extends State<EmailLogin> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => Home(title: widget.title)),
+            MaterialPageRoute(builder: (context) => Home(title: widget.title)),
           );
         },
         child: Icon(Icons.navigation),
