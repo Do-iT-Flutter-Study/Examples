@@ -151,8 +151,8 @@ class _EmailLoginState extends State<EmailLogin> {
                                   idController.text, pwController.text)
                               .catchError((onError) {
                             print(onError);
-                          }).then((success) {
-                            if (success == true) {
+                          }).then((result) {
+                            if (result == 'success') {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -176,7 +176,7 @@ class _EmailLoginState extends State<EmailLogin> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text("ID or password error")
+                                              Text(result)
                                             ]),
                                         actions: <Widget>[
                                           FlatButton(

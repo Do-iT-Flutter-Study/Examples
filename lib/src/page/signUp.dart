@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
+import 'home.dart';
+import '../service/auth.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({Key? key, required this.title}) : super(key: key);
 
@@ -11,8 +14,22 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final idController = TextEditingController();
+  final pwController = TextEditingController();
+  final confirmController = TextEditingController();
+
+  AuthService _auth = AuthService();
+
   bool _isObscure = true;
   bool? _isChecked = false;
+
+  @override
+  void dispose() {
+    idController.dispose();
+    pwController.dispose();
+    confirmController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +49,7 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       TextField(
+                        controller: idController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.people),
                           labelText: 'ID',
@@ -60,6 +78,7 @@ class _SignUpState extends State<SignUp> {
                         height: 10,
                       ),
                       TextField(
+                        controller: pwController,
                         obscureText: _isObscure,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock),
@@ -98,6 +117,7 @@ class _SignUpState extends State<SignUp> {
                         height: 10,
                       ),
                       TextField(
+                        controller: confirmController,
                         obscureText: _isObscure,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock),
@@ -138,7 +158,41 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (pwController.text != confirmController.text) {
+                                dialog(
+                                    "Password error",
+                                    "Password end confirm password don't match",
+                                    "OK");
+                              } else {
+                                _auth
+                                    .signUpWithEmail(
+                                        idController.text, pwController.text)
+                                    .catchError((onError) {
+                                  print(onError);
+                                }).then((result) => {
+                                          if (result == 'success')
+                                            {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => Home(
+                                                        title: widget.title)),
+                                              )
+                                            }
+                                          else if (result == 'error')
+                                            {
+                                              dialog("Sign-Up error",
+                                                  "Sign-Up error", "OK")
+                                            }
+                                          else
+                                            {
+                                              dialog(result,
+                                                  "Check the error", "OK")
+                                            }
+                                        });
+                              }
+                            },
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all(Colors.red),
@@ -169,7 +223,7 @@ class _SignUpState extends State<SignUp> {
                       Row(children: <Widget>[
                         Expanded(
                           child: Container(
-                              margin: EdgeInsets.only(left:  0, right: 20.0),
+                              margin: EdgeInsets.only(left: 0, right: 20.0),
                               child: Divider(
                                 color: Colors.black,
                                 height: 36,
@@ -200,5 +254,30 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
         ));
+  }
+
+  void dialog(String title, String content, String action) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              title: Column(children: <Widget>[
+                Text(title),
+              ]),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[Text(content)]),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(action))
+              ]);
+        });
   }
 }
